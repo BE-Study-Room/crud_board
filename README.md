@@ -20,3 +20,11 @@
 1. PR 제목 양식
    - [본인 이름] / 주제
    - **주의** PR시 base:본인이름!! main아닙니다.
+   - git pull upstream 브랜치이름
+   - git push origin 브랜치이름
+   - git pull origin 브랜치이름
+   - 인텔리제이에서 작업하기
+   - git add .
+   - git commit -m "설명"
+   - git push origin 브랜치이름
+   - pr올리기
