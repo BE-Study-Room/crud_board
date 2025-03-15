@@ -21,5 +21,15 @@ public class Article {
         this.nowDate = nowDate;
         this.author = author;
     }
+
+    @Override
+    public String toString() {
+        return "게시글 ID: " + id +
+                "\n제목: " + title +
+                "\n내용: " + body +
+                "\n조회수: " + hit +
+                "\n작성일: " + nowDate +
+                "\n작성자: " + author;
+    }
 }
 

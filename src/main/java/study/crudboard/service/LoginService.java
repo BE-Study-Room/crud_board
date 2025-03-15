@@ -4,11 +4,11 @@ import study.crudboard.entity.*;
 
 import java.util.*;
 
-public class App {
+public class LoginService {
     private final ArrayList<Member> members; // 회원 정보 저장
     private Member loginMember; // 회원의 이름 저장 (작성자 체크를 위해)
 
-    public App(){
+    public LoginService(){
         members = new ArrayList<>();
         loginMember = null;
     }

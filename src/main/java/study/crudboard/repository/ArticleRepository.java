@@ -7,8 +7,5 @@ public interface ArticleRepository {
     ArrayList<Article> read(int id);
     void update(int id, Article article);
     void delete(int id);
-    void detail(int id);
     Optional<Article> findId(int id);
-
-
 }

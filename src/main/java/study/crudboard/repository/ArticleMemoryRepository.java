@@ -52,11 +52,6 @@ public class ArticleMemoryRepository implements ArticleRepository{
     }
 
     @Override
-    public void detail(int id) {
-
-    }
-
-    @Override
     public Optional<Article> findId(int id){
         if(articleList.containsKey(id)){
             return Optional.of(articleList.get(id));
