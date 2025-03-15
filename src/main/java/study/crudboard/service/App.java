@@ -1,3 +1,7 @@
+package study.crudboard.service;
+
+import study.crudboard.entity.*;
+
 import java.util.*;
 
 public class App {
