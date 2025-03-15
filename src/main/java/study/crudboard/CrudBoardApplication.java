@@ -17,19 +17,13 @@ import study.crudboard.service.*;
 @SpringBootApplication
 public class CrudBoardApplication {
 
-
     public static void main(String[] args) {
 		final ArrayList<Article> articles = new ArrayList<>();
 		int articleCount = 0; // 멤버 변수로 생성
 		String UserName;
-		final ArticleService articleService;
 
-		public CrudBoardApplication(ArticleService articleService) {
-				this.articleService = articleService;
-		}
-		SpringApplication.run(CrudBoardApplication.class, args);
-		ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
-		CrudBoardApplication main = ac.getBean(CrudBoardApplication.class);
+		ConfigurableApplicationContext context = SpringApplication.run(CrudBoardApplication.class, args);
+		ArticleService articleService = context.getBean(ArticleService.class);
 
 		App app = new App();
 		String username = app.start(); // app 메서드를 실행하여 로그인한 username 저장
