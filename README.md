@@ -18,8 +18,12 @@
 - 매주 정해진 주제를 수행하고 관련 개념을 학습합니다.
 - 각 스터디원은 관련 개념을 설명하고 프로젝트 결과를 공유합니다.
 
-## Git 방법 (혁주 이거 보고 하면 돼. 그대로 명령어 넣어)
+## Git 방법 
+
+(혁주 이거 보고 하면 돼. 그대로 명령어 넣어)
+
 자신의 branch인지 확인 후 작업하기
-git add .
-git commit -m "커밋메세지"
-git push upstream 자기이름
+
+git add .  
+git commit -m "커밋메세지"  
+git push upstream 자기이름  
