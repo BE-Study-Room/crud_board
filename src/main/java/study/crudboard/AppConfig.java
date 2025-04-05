@@ -1,18 +1,20 @@
-package study.crudboard;
+// 수동 bean 주입 방식
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import study.crudboard.repository.ArticleMemoryRepository;
-import study.crudboard.service.ArticleService;
-
-@Configuration
-public class AppConfig {
-    @Bean
-    public ArticleService articleService(){
-        return new ArticleService(repository());
-    }
-    @Bean
-    public ArticleMemoryRepository repository(){
-        return new ArticleMemoryRepository();
-    }
-}
+//package study.crudboard;
+//
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import study.crudboard.repository.ArticleMemoryRepository;
+//import study.crudboard.service.ArticleService;
+//
+//@Configuration
+//public class AppConfig {
+//    @Bean
+//    public ArticleService articleService(){
+//        return new ArticleService(repository());
+//    }
+//    @Bean
+//    public ArticleMemoryRepository repository(){
+//        return new ArticleMemoryRepository();
+//    }
+//}

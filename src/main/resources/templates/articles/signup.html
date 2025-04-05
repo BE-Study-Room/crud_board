@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up</title>
+</head>
+<body>
+<h1>Sign Up</h1>
+
+<div th:if="${param.error}">
+  <p style="color:red;">ID already exists or invalid input.</p>
+</div>
+
+<form action="/signup" method="post" th:object="${memberForm}">
+  <label for="loginId">ID:</label>
+  <input type="text" id="loginId" th:field="*{loginId}" required><br>
+
+  <label for="loginPw">Password:</label>
+  <input type="password" id="loginPw" th:field="*{loginPw}" required><br>
+
+  <label for="name">Name:</label>
+  <input type="text" id="name" th:field="*{name}" required><br>
+
+  <button type="submit">Sign Up</button>
+</form>
+
+<a th:href="@{/login}">Go to Login</a>
+</body>
+</html>

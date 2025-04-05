@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Post Detail</title>
+</head>
+<body>
+<h1 th:text="${article.title}">Post Title</h1>
+
+<p><strong>Author:</strong> <span th:text="${article.author}"></span></p>
+<p><strong>Date:</strong> <span th:text="${article.nowDate}"></span></p>
+<p><strong>Hits:</strong> <span th:text="${article.hit}"></span></p>
+<p><strong>Content:</strong></p>
+<p th:text="${article.body}"></p>
+
+<a th:href="@{/articles/{id}/edit(id=${article.id})}">Edit</a>
+<form th:action="@{/articles/{id}/delete(id=${article.id})}" method="post" style="display:inline;">
+    <button type="submit">Delete</button>
+</form>
+<br>
+<a th:href="@{/articles}">Back to List</a>
+</body>
+</html>
