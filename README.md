@@ -11,6 +11,7 @@
 - 3주차 : 기존 게시판을 Spring 구조로 바꿔보기(2)
 - 4주차 : Bean스코프
 - 5주차 : 기존 Spring게시판1을 자동 빈 주입, MVC구조로 바꿔보기
+- 6주차 : MVC구조 개념 정리 + Validation 적용시키기
 
 ## 📌 STUDY RULE
 
