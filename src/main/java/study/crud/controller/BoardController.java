@@ -1,25 +1,26 @@
 package study.crud.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import study.crud.dto.UpdateBoardDto;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import study.crud.dto.BoardSaveForm;
+import study.crud.dto.BoardUpdateForm;
 import study.crud.entity.Board;
 import study.crud.service.BoardService;
 
 import java.util.List;
 
 @Controller
+@Slf4j
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
@@ -32,16 +33,23 @@ public class BoardController {
         return "boardList";
     }
 
-    @GetMapping("/form")
-    public String createForm() {
+    @GetMapping("/create")
+    public String createForm(Model model) {
+        model.addAttribute("board", new Board());
         return "boardForm";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Board board) {
-         boardService.create(board);
-        return "redirect:/board";
+    public String create(@Validated @ModelAttribute("board") BoardSaveForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            log.error("error발생: {}", bindingResult);
+            return "boardForm";
+        }
+        Board board = boardService.create(form);
+        redirectAttributes.addAttribute("boardId",board.getId());
+        return "redirect:/board/{boardId}";
     }
+
     @GetMapping("/{boardId}/edit")
     public String update(@PathVariable int boardId, Model model) {
         Board board = boardService.findById(boardId);
@@ -50,8 +58,15 @@ public class BoardController {
     }
 
     @PostMapping("/{boardId}/edit")
-    public String update(@PathVariable int boardId, @ModelAttribute UpdateBoardDto boardParam) {
+    public String update(@PathVariable int boardId, @Validated @ModelAttribute("board") BoardUpdateForm boardParam,BindingResult bindingResult
+    , RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            log.error("error발생: {}", bindingResult);
+            return "boardEditForm";
+        }
+
         boardService.update(boardId, boardParam);
+        redirectAttributes.addAttribute("boardId",boardId);
         return "redirect:/board";
     }
 

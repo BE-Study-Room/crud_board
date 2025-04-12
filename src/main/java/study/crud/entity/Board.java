@@ -1,5 +1,10 @@
 package study.crud.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
 public class Board {
     private int id=1;
     private String title;
@@ -13,28 +18,12 @@ public class Board {
         this.writer = writer;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
-    }
-
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getWriter() {
-        return writer;
     }
 
     @Override
