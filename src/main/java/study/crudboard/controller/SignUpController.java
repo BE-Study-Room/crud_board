@@ -1,13 +1,15 @@
 package study.crudboard.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import study.crudboard.entity.Member;
 import study.crudboard.service.MemberService;
-import study.crudboard.controller.MemberForm;
+import study.crudboard.dto.MemberForm;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,7 +26,10 @@ public class SignUpController {
 
     // 회원가입 처리
     @PostMapping("/signup")
-    public String register(@ModelAttribute MemberForm memberForm, Model model, HttpSession session) {
+    public String register(@Valid @ModelAttribute MemberForm memberForm, BindingResult bindingResult, Model model, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            return "articles/signup"; // 유효성 검증 오류가 있으면 회원가입 폼으로 다시 반환
+        }
         Member member = new Member();
         member.setLoginId(memberForm.getLoginId());
         member.setLoginPw(memberForm.getLoginPw());

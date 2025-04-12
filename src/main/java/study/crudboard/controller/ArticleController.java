@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import study.crudboard.dto.ArticleForm;
 import study.crudboard.entity.Article;
 import study.crudboard.entity.Member;
+import study.crudboard.exception.ArticleValidationException;
 import study.crudboard.service.ArticleService;
 import study.crudboard.service.Util;
 
@@ -33,7 +35,7 @@ public class ArticleController {
 
     // 글 저장
     @PostMapping
-    public String create(@ModelAttribute ArticleForm form, HttpSession session) {
+    public String create(@ModelAttribute ArticleForm form, HttpSession session) throws ArticleValidationException {
         // 로그인된 사용자 정보 가져오기
         Member loginMember = (Member) session.getAttribute("loginMember");
         String author = (loginMember != null) ? loginMember.getName() : "login plz";
@@ -49,7 +51,7 @@ public class ArticleController {
 
     // 글 상세 보기
     @GetMapping("/{id}")
-    public String detail(@PathVariable int id, Model model) {
+    public String detail(@PathVariable int id, Model model) throws ArticleValidationException {
         Article article = articleService.findId(id);
 
         article.incrementHit();
@@ -69,7 +71,7 @@ public class ArticleController {
 
     // 글 수정 반영
     @PostMapping("/{id}/edit")
-    public String update(@PathVariable int id, @ModelAttribute Article article) {
+    public String update(@PathVariable int id, @ModelAttribute Article article) throws ArticleValidationException {
         articleService.update(article);
 
         return "redirect:/articles/" + article.getId();

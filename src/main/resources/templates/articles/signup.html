@@ -14,12 +14,15 @@
 <form action="/signup" method="post" th:object="${memberForm}">
   <label for="loginId">ID:</label>
   <input type="text" id="loginId" th:field="*{loginId}" required><br>
+  <div th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}" style="color:red;"></div>
 
   <label for="loginPw">Password:</label>
   <input type="password" id="loginPw" th:field="*{loginPw}" required><br>
+  <div th:if="${#fields.hasErrors('loginPw')}" th:errors="*{loginPw}" style="color:red;"></div>
 
   <label for="name">Name:</label>
   <input type="text" id="name" th:field="*{name}" required><br>
+  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red;"></div>
 
   <button type="submit">Sign Up</button>
 </form>

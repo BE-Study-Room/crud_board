@@ -1,17 +1,20 @@
 package study.crudboard.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import study.crudboard.dto.LoginForm;
 import study.crudboard.entity.Member;
 import study.crudboard.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
+
 @RequiredArgsConstructor
 public class LoginController {
 
@@ -29,7 +32,11 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginForm loginForm, HttpSession session) {
+    public String login(@Valid @ModelAttribute LoginForm loginForm, BindingResult bindingResult, HttpSession session) {
+        if (bindingResult.hasErrors()) {
+            return "articles/login"; // 유효성 검증 오류가 있으면 로그인 폼으로 다시 반환
+        }
+
         Member loginMember = memberService.login(loginForm.getLoginId(), loginForm.getLoginPw());
         if (loginMember == null) {
             return "redirect:/login?error";
