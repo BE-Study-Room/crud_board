@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Post List</title>
+    <link rel="stylesheet" th:href="@{/css/list.css}">
 </head>
 <body>
+
 <h1>All Posts</h1>
 
-<table border="1">
+<table>
     <thead>
     <tr>
         <th>ID</th>
@@ -30,7 +32,12 @@
     </tbody>
 </table>
 
-<a th:href="@{/articles/form}">Create New Article</a>
+
+<a th:href="@{/articles/form}" class="button-link">Create New Article</a>
+
+<form th:action="@{/logout}" method="get" style="margin-top: 40px;">
+    <button type="submit">Logout</button>
+</form>
 
 </body>
 </html>

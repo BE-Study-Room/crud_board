@@ -3,22 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Create New Post</title>
+    <link rel="stylesheet" th:href="@{/css/list.css}">
 </head>
 <body>
-<h1>Create New Post</h1>
 
-<form th:action="@{/articles}" th:object="${article}" method="post">
-    <label>Title:
-        <input type="text" th:field="*{title}" required>
-    </label><br>
+<div class="container">
+    <h1 class="post-title">Create New Post</h1>
 
-    <label>Content:
-        <textarea th:field="*{body}" required></textarea>
-    </label><br>
+    <form th:action="@{/articles}" th:object="${article}" method="post" class="form-box">
+        <label>Title:<br>
+            <input type="text" th:field="*{title}" required>
+        </label><br><br>
 
-    <button type="submit">Submit</button>
-</form>
+        <label>Content:<br>
+            <textarea th:field="*{body}" required></textarea>
+        </label><br><br>
 
-<a th:href="@{/articles}">Back to List</a>
+        <button type="submit">Submit</button>
+    </form>
+
+    <a th:href="@{/articles}" class="button-link back">Back to List</a>
+</div>
+
 </body>
 </html>

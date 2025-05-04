@@ -3,25 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Post</title>
+    <link rel="stylesheet" th:href="@{/css/list.css}">
 </head>
 <body>
-<h1>Edit Post</h1>
 
-<form th:action="@{/articles/{id}/edit(id=${article.id})}" th:object="${article}" method="post">
-    <label>Title:
-        <input type="text" th:field="*{title}" required>
-    </label><br>
+<div class="container">
+    <h1 class="post-title">Edit Post</h1>
 
-    <label>Content:
-        <textarea th:field="*{body}" required></textarea>
-    </label><br>
+    <div th:if="${unauthorized != null}" class="warning">
+        ⚠️ 권한이 없습니다. 본인만 수정/삭제할 수 있습니다.
+    </div>
 
-    <input type="hidden" th:field="*{author}" />
-    <input type="hidden" th:field="*{nowDate}" />
+    <form th:action="@{/articles/{id}/edit(id=${article.id})}" th:object="${article}" method="post" class="form-box">
+        <label>Title:<br>
+            <input type="text" th:field="*{title}" required>
+        </label><br><br>
 
-    <button type="submit">Update</button>
-</form>
+        <label>Content:<br>
+            <textarea th:field="*{body}" required></textarea>
+        </label><br><br>
 
-<a th:href="@{/articles/{id}(id=${article.id})}">Back to Detail</a>
+        <input type="hidden" th:field="*{author}" />
+        <input type="hidden" th:field="*{nowDate}" />
+
+        <button type="submit">Update</button>
+    </form>
+
+    <a th:href="@{/articles/{id}(id=${article.id})}" class="button-link back">Back to Detail</a>
+</div>
+
 </body>
 </html>

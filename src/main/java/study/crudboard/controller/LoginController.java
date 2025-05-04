@@ -1,5 +1,6 @@
 package study.crudboard.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
@@ -32,17 +33,22 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginForm loginForm, BindingResult bindingResult, HttpSession session) {
+    public String login(@Valid @ModelAttribute LoginForm loginForm,
+                        BindingResult bindingResult,
+                        HttpSession session, HttpServletResponse response) {
+
         if (bindingResult.hasErrors()) {
             return "articles/login"; // 유효성 검증 오류가 있으면 로그인 폼으로 다시 반환
         }
 
-        Member loginMember = memberService.login(loginForm.getLoginId(), loginForm.getLoginPw());
+        Member loginMember = memberService.login(loginForm.getLoginId(),
+                                                loginForm.getLoginPw());
         if (loginMember == null) {
             return "redirect:/login?error";
         }
 
         session.setAttribute("loginMember", loginMember);
+
         return "redirect:/articles";
     }
 

@@ -3,21 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Post Detail</title>
+    <link rel="stylesheet" th:href="@{/css/list.css}">
 </head>
 <body>
-<h1 th:text="${article.title}">Post Title</h1>
 
-<p><strong>Author:</strong> <span th:text="${article.author}"></span></p>
-<p><strong>Date:</strong> <span th:text="${article.nowDate}"></span></p>
-<p><strong>Hits:</strong> <span th:text="${article.hit}"></span></p>
-<p><strong>Content:</strong></p>
-<p th:text="${article.body}"></p>
+<div class="container">
+    <h1 class="post-title" th:text="${article.title}">Post Title</h1>
 
-<a th:href="@{/articles/{id}/edit(id=${article.id})}">Edit</a>
-<form th:action="@{/articles/{id}/delete(id=${article.id})}" method="post" style="display:inline;">
-    <button type="submit">Delete</button>
-</form>
-<br>
-<a th:href="@{/articles}">Back to List</a>
+    <div th:if="${unauthorized != null}" class="warning">
+        ⚠️ 권한이 없습니다. 본인만 수정/삭제할 수 있습니다.
+    </div>
+
+    <p><strong>Author:</strong> <span th:text="${article.author}"></span></p>
+    <p><strong>Date:</strong> <span th:text="${article.nowDate}"></span></p>
+    <p><strong>Hits:</strong> <span th:text="${article.hit}"></span></p>
+    <p><strong>Content:</strong></p>
+    <div class="content-box" th:text="${article.body}"></div>
+
+    <div class="button-group">
+        <a th:href="@{/articles/{id}/edit(id=${article.id})}" class="button-link">Edit</a>
+
+        <form th:action="@{/articles/{id}/delete(id=${article.id})}" method="post" style="display:inline;">
+            <button type="submit">Delete</button>
+        </form>
+
+        <a th:href="@{/articles}" class="button-link back">Back to List</a>
+    </div>
+</div>
+
 </body>
 </html>

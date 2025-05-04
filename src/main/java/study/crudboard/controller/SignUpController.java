@@ -43,7 +43,7 @@ public class SignUpController {
         }
 
         // 회원가입 성공 시 로그인 처리
-        session.setAttribute("loginMember", member);
-        return "redirect:/articles";
+        // session.setAttribute("loginMember", member);
+        return "redirect:/login";
     }
 }

@@ -38,8 +38,11 @@ public class ArticleController {
     public String create(@ModelAttribute ArticleForm form, HttpSession session) throws ArticleValidationException {
         // 로그인된 사용자 정보 가져오기
         Member loginMember = (Member) session.getAttribute("loginMember");
-        String author = (loginMember != null) ? loginMember.getName() : "login plz";
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
 
+        String author = loginMember.getName();
         int id = articleService.generateId();
         String nowDate = Util.getNowDateStr();
 
@@ -51,21 +54,34 @@ public class ArticleController {
 
     // 글 상세 보기
     @GetMapping("/{id}")
-    public String detail(@PathVariable int id, Model model) throws ArticleValidationException {
+    public String detail(@PathVariable int id, Model model,
+                         @RequestParam(value = "unauthorized", required = false) String unauthorized)
+                        throws ArticleValidationException {
+
         Article article = articleService.findId(id);
 
         article.incrementHit();
         articleService.update(article);
 
         model.addAttribute("article", article);
+        model.addAttribute("unauthorized", unauthorized);
         return "articles/detail";
     }
 
     // 글 수정 폼
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable int id, Model model) {
+    public String edit(@PathVariable int id, Model model,
+                       HttpSession session,
+                       @RequestParam(value = "unauthorized", required = false) String unauthorized) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
         Article article = articleService.findId(id);
+
+        if (loginMember == null || !loginMember.getName().equals(article.getAuthor())) {
+            return "redirect:/articles/" + id + "?unauthorized";
+        }
+
         model.addAttribute("article", article);
+        model.addAttribute("unauthorized", unauthorized);
         return "articles/edit";
     }
 
@@ -80,8 +96,17 @@ public class ArticleController {
 
     // 글 삭제
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable int id) {
+    public String delete(@PathVariable int id, HttpSession session) {
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        Article article = articleService.findId(id);
+
+        if (loginMember == null || !loginMember.getName().equals(article.getAuthor())) {
+            return "redirect:/articles/" + id + "?unauthorized";
+
+        }
+
         articleService.delete(id);
         return "redirect:/articles";
     }
+
 }
