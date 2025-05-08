@@ -28,7 +28,7 @@ public class SignUpController {
     @PostMapping("/signup")
     public String register(@Valid @ModelAttribute MemberForm memberForm, BindingResult bindingResult, Model model, HttpSession session) {
         if (bindingResult.hasErrors()) {
-            return "articles/signup"; // 유효성 검증 오류가 있으면 회원가입 폼으로 다시 반환
+            return "articles/signup";
         }
         Member member = new Member();
         member.setLoginId(memberForm.getLoginId());
@@ -42,8 +42,6 @@ public class SignUpController {
             return "articles/signup";
         }
 
-        // 회원가입 성공 시 로그인 처리
-        // session.setAttribute("loginMember", member);
         return "redirect:/login";
     }
 }
