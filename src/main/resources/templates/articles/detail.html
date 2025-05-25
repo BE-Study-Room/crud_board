@@ -4,31 +4,43 @@
     <meta charset="UTF-8">
     <title>Post Detail</title>
     <link rel="stylesheet" th:href="@{/css/list.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="container">
+
     <h1 class="post-title" th:text="${article.title}">Post Title</h1>
 
+    <!-- 권한 경고 -->
     <div th:if="${unauthorized != null}" class="warning">
         ⚠️ 권한이 없습니다. 본인만 수정/삭제할 수 있습니다.
     </div>
 
-    <p><strong>Author:</strong> <span th:text="${article.author.name}"></span></p>
-    <p><strong>Date:</strong> <span th:text="${article.nowDate}"></span></p>
-    <p><strong>Hits:</strong> <span th:text="${article.hit}"></span></p>
-    <p><strong>Content:</strong></p>
-    <div class="content-box" th:text="${article.body}"></div>
+    <!-- 글 정보 -->
+    <section>
+        <p><strong>Author:</strong> <span th:text="${article.author.name}">작성자</span></p>
+        <p><strong>Date:</strong> <time th:text="${article.nowDate}">날짜</time></p>
+        <p><strong>Hits:</strong> <span th:text="${article.hit}">조회수</span></p>
+    </section>
 
-    <div class="button-group">
-        <a th:href="@{/articles/{id}/edit(id=${article.id})}" class="button-link">Edit</a>
+    <!-- 본문 -->
+    <h4>Content</h4>
+    <div class="content-box" th:text="${article.body}">
+        본문 내용입니다.
+    </div>
+
+    <!-- 버튼 영역 -->
+    <div class="form-box button-group" style="flex-direction: row; gap: 12px; margin-top: 40px;">
+        <a th:href="@{/articles/{id}/edit(id=${article.id})}" class="button-link button">Edit</a>
 
         <form th:action="@{/articles/{id}/delete(id=${article.id})}" method="post" style="display:inline;">
-            <button type="submit">Delete</button>
+            <button type="submit" class="button">Delete</button>
         </form>
 
-        <a th:href="@{/articles}" class="button-link back">Back to List</a>
+        <a th:href="@{/articles}" class="button-link button back">Back to List</a>
     </div>
+
 </div>
 
 </body>
