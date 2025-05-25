@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import study.crudboard.entity.Member;
 import study.crudboard.repository.MemberRepository;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -14,16 +16,18 @@ public class MemberService {
         if (memberRepository.existsByLoginId(loginId)) {
             return false;
         }
-        int id = memberRepository.generateId();
-        Member member = new Member(id, loginId, loginPw, name);
+        Member member = new Member(loginId, loginPw, name);
         memberRepository.save(member);
         return true;
     }
 
     public Member login(String loginId, String loginPw) {
-        Member member = memberRepository.findByLoginId(loginId);
-        if (member != null && member.getLoginPw().equals(loginPw)) {
-            return member;
+        Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            if (member.getLoginPw().equals(loginPw)) {
+                return member;
+            }
         }
         return null;
     }

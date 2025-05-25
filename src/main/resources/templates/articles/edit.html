@@ -23,7 +23,7 @@
             <textarea th:field="*{body}" required></textarea>
         </label><br><br>
 
-        <input type="hidden" th:field="*{author}" />
+        <input type="hidden" th:field="*{author.name}" />
         <input type="hidden" th:field="*{nowDate}" />
 
         <button type="submit">Update</button>

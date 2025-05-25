@@ -38,11 +38,12 @@ public class ArticleController {
     public String create(@ModelAttribute ArticleForm form, HttpSession session) throws ArticleValidationException {
         Member loginMember = (Member) session.getAttribute("loginMember");
 
-        String author = loginMember.getName();
-        int id = articleService.generateId();
-        String nowDate = Util.getNowDateStr();
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
 
-        Article article = new Article(id, form.getTitle(), form.getBody(), nowDate, author);
+        String nowDate = Util.getNowDateStr();
+        Article article = new Article(form.getTitle(), form.getBody(), nowDate, loginMember);
         articleService.create(article);
 
         return "redirect:/articles";
@@ -73,7 +74,10 @@ public class ArticleController {
 
     // 글 수정 반영
     @PostMapping("/{id}/edit")
-    public String update(@PathVariable int id, @ModelAttribute Article article) throws ArticleValidationException {
+    public String update(@PathVariable int id, @ModelAttribute ArticleForm form) throws ArticleValidationException {
+        Article article = articleService.findId(id);
+        article.setTitle(form.getTitle());
+        article.setBody(form.getBody());
         articleService.update(article);
         return "redirect:/articles/" + article.getId();
     }

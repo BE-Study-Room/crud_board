@@ -40,10 +40,11 @@ public class AuthorCheckInterceptor implements HandlerInterceptor {
             int articleId = Integer.parseInt(parts[2]);
             Article article = articleService.findId(articleId);
 
-            if (!loginMember.getName().equals(article.getAuthor())) {
+            if (!loginMember.getId().equals(article.getAuthor().getId())) {
                 response.sendRedirect("/articles/" + articleId + "?unauthorized");
                 return false;
             }
+
 
         } catch (NumberFormatException e) {
             response.sendRedirect("/articles?unauthorized");

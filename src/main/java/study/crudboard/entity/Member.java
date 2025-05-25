@@ -1,23 +1,29 @@
 package study.crudboard.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Member {
-    int id;
-    public String loginId;
-    public String loginPw;
-    public String name;
 
-    public Member() {}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    public Member(int id, String loginId, String loginPw, String name){
-        this.id = id;
+    @Column(unique = true, nullable = false)
+    private String loginId;
+
+    private String loginPw;
+    private String name;
+
+    public Member(String loginId, String loginPw, String name){
         this.loginId = loginId;
         this.loginPw = loginPw;
         this.name = name;
     }
-
 }

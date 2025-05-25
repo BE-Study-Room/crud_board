@@ -1,32 +1,13 @@
 package study.crudboard.repository;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import study.crudboard.entity.Member;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class MemberRepository {
-    private final List<Member> members = new ArrayList<>();
+public interface MemberRepository extends JpaRepository<Member, Integer> {
 
-    public void save(Member member) {
-        members.add(member);
-    }
+    Optional<Member> findByLoginId(String loginId);
 
-    public Member findByLoginId(String loginId) {
-        return members.stream()
-                .filter(m -> m.getLoginId().equals(loginId))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public boolean existsByLoginId(String loginId) {
-        return members.stream()
-                .anyMatch(m -> m.getLoginId().equals(loginId));
-    }
-
-    public int generateId() {
-        return members.size() + 1;
-    }
+    boolean existsByLoginId(String loginId);
 }

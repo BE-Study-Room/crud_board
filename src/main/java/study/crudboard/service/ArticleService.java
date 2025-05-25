@@ -3,8 +3,8 @@ package study.crudboard.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import study.crudboard.entity.Article;
-import study.crudboard.repository.ArticleRepository;
 import study.crudboard.exception.ArticleValidationException;
+import study.crudboard.repository.ArticleRepository;
 
 import java.util.List;
 
@@ -13,15 +13,15 @@ import java.util.List;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private int nextId = 1;
 
     public void create(Article article) throws ArticleValidationException {
         validateArticle(article);
-        articleRepository.create(article);
+        articleRepository.save(article);
     }
 
     public Article findId(int id) {
-        return articleRepository.findById(id);
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 게시글이 없습니다: " + id));
     }
 
     public List<Article> findAll() {
@@ -30,15 +30,11 @@ public class ArticleService {
 
     public void update(Article updatedArticle) throws ArticleValidationException {
         validateArticle(updatedArticle);
-        articleRepository.update(updatedArticle);
+        articleRepository.save(updatedArticle);
     }
 
     public void delete(int id) {
-        articleRepository.delete(id);
-    }
-
-    public int generateId() {
-        return nextId++;
+        articleRepository.deleteById(id);
     }
 
     private void validateArticle(Article article) throws ArticleValidationException {
