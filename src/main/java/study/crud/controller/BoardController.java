@@ -18,6 +18,7 @@ import study.crud.entity.Board;
 import study.crud.service.BoardService;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @Slf4j
@@ -51,14 +52,14 @@ public class BoardController {
     }
 
     @GetMapping("/{boardId}/edit")
-    public String update(@PathVariable int boardId, Model model) {
+    public String update(@PathVariable UUID boardId, Model model) {
         Board board = boardService.findById(boardId);
         model.addAttribute("board", board);
         return "boardEditForm";
     }
 
     @PostMapping("/{boardId}/edit")
-    public String update(@PathVariable int boardId, @Validated @ModelAttribute("board") BoardUpdateForm boardParam,BindingResult bindingResult
+    public String update(@PathVariable UUID boardId, @Validated @ModelAttribute("board") BoardUpdateForm boardParam,BindingResult bindingResult
     , RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()){
             log.error("error발생: {}", bindingResult);
@@ -71,14 +72,14 @@ public class BoardController {
     }
 
     @GetMapping("/{boardId}")
-    public String findById(@PathVariable int boardId,Model model) {
+    public String findById(@PathVariable UUID boardId,Model model) {
         Board result = boardService.findById(boardId);
         model.addAttribute("board", result);
         return "boardDetail";
     }
 
     @PostMapping("/{boardId}/delete")
-    public String delete(@PathVariable int boardId) {
+    public String delete(@PathVariable UUID boardId) {
         boardService.delete(boardId);
         return "redirect:/board";
     }
