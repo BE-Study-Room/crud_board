@@ -26,21 +26,12 @@ public class SignUpController {
 
     // 회원가입 처리
     @PostMapping("/signup")
-    public String register(@Valid @ModelAttribute MemberForm memberForm, BindingResult bindingResult, Model model, HttpSession session) {
+    public String register(@Valid @ModelAttribute MemberForm memberForm, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "articles/signup";
         }
-        Member member = new Member();
-        member.setLoginId(memberForm.getLoginId());
-        member.setLoginPw(memberForm.getLoginPw());
-        member.setName(memberForm.getName());
 
-        boolean result = memberService.join(member.getLoginId(), member.getLoginPw(), member.getName());
-
-        if (!result) {
-            model.addAttribute("error", "Duplicate login ID or invalid input.");
-            return "articles/signup";
-        }
+        memberService.join(memberForm.getLoginId(), memberForm.getLoginPw(), memberForm.getName());
 
         return "redirect:/login";
     }

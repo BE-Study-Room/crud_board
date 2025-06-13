@@ -5,6 +5,19 @@
     <title>Edit Post</title>
     <link rel="stylesheet" th:href="@{/css/list.css}">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        .error-message {
+            color: red;
+            background-color: #ffe6e6;
+            border: 1px solid red;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -12,11 +25,10 @@
 
     <h1 class="post-title">Edit Post</h1>
 
-
-    <div th:if="${unauthorized != null}" class="warning">
-        ⚠️ 권한이 없습니다. 본인만 수정/삭제할 수 있습니다.
+    <!-- FlashAttribute 에러 메시지 표시 -->
+    <div th:if="${errorMessage}" class="error-message">
+        <p th:text="${errorMessage}"></p>
     </div>
-
 
     <form th:action="@{/articles/{id}/edit(id=${article.id})}" th:object="${article}" method="post" class="form-box">
 
@@ -30,13 +42,11 @@
             <textarea id="body" th:field="*{body}" placeholder="Enter content" required></textarea>
         </div>
 
-
         <input type="hidden" th:field="*{author.name}" />
         <input type="hidden" th:field="*{nowDate}" />
 
         <button type="submit" class="button">Update</button>
     </form>
-
 
     <div style="margin-top: 20px;">
         <a th:href="@{/articles/{id}(id=${article.id})}" class="button-link button back">Back to Detail</a>

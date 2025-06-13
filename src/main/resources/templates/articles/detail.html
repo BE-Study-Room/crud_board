@@ -5,6 +5,19 @@
     <title>Post Detail</title>
     <link rel="stylesheet" th:href="@{/css/list.css}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        .error-message {
+            color: red;
+            background-color: #ffe6e6;
+            border: 1px solid red;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -12,9 +25,9 @@
 
     <h1 class="post-title" th:text="${article.title}">Post Title</h1>
 
-    <!-- 권한 경고 -->
-    <div th:if="${unauthorized != null}" class="warning">
-        ⚠️ 권한이 없습니다. 본인만 수정/삭제할 수 있습니다.
+    <!-- FlashAttribute 에러 메시지 표시 -->
+    <div th:if="${errorMessage}" class="error-message">
+        <p th:text="${errorMessage}"></p>
     </div>
 
     <!-- 글 정보 -->

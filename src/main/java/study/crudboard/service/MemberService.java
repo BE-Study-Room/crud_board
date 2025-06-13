@@ -3,6 +3,8 @@ package study.crudboard.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import study.crudboard.entity.Member;
+import study.crudboard.exception.BusinessException;
+import study.crudboard.exception.ErrorCode;
 import study.crudboard.repository.MemberRepository;
 
 import java.util.Optional;
@@ -12,23 +14,22 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public boolean join(String loginId, String loginPw, String name) {
+    public void join(String loginId, String loginPw, String name) {
         if (memberRepository.existsByLoginId(loginId)) {
-            return false;
+            throw new BusinessException(ErrorCode.HAS_EMAIL, "/signup");
         }
         Member member = new Member(loginId, loginPw, name);
         memberRepository.save(member);
-        return true;
     }
 
     public Member login(String loginId, String loginPw) {
-        Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
-        if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-            if (member.getLoginPw().equals(loginPw)) {
-                return member;
-            }
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND, "/login"));
+
+        if (!member.getLoginPw().equals(loginPw)) {
+            throw new BusinessException(ErrorCode.INVALID_PASSWORD, "/login");
         }
-        return null;
+
+        return member;
     }
 }

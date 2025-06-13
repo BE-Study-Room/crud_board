@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import study.crudboard.entity.Article;
 import study.crudboard.entity.Member;
+import study.crudboard.exception.BusinessException;
+import study.crudboard.exception.ErrorCode;
 import study.crudboard.service.ArticleService;
 
 @RequiredArgsConstructor
@@ -41,9 +43,9 @@ public class AuthorCheckInterceptor implements HandlerInterceptor {
             Article article = articleService.findId(articleId);
 
             if (!loginMember.getId().equals(article.getAuthor().getId())) {
-                response.sendRedirect("/articles/" + articleId + "?unauthorized");
-                return false;
+                throw new BusinessException(ErrorCode.UNAUTHORIZED_ACCESS, "/articles/" + articleId);
             }
+
 
 
         } catch (NumberFormatException e) {

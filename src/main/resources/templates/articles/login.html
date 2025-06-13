@@ -6,12 +6,41 @@
   <link rel="stylesheet" th:href="@{/css/list.css}">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
+  <style>
+    .error-message {
+      color: red;
+      background-color: #ffe6e6;
+      border: 1px solid red;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .warning {
+      color: red;
+      background-color: #fff0f0;
+      border: 1px solid red;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
 <div class="container">
   <h1 class="post-title">Login</h1>
 
+  <!-- FlashAttribute 에러 메시지 표시 -->
+  <div th:if="${errorMessage}" class="error-message">
+    <p th:text="${errorMessage}"></p>
+  </div>
+
+  <!-- 기존 param.error 처리 -->
   <div th:if="${param.error}" class="warning">
     Invalid ID or password.
   </div>

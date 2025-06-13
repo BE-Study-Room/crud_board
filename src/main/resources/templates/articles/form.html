@@ -6,11 +6,26 @@
     <link rel="stylesheet" th:href="@{/css/list.css}">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
+    <style>
+        .error-message {
+            color: red;
+            background-color: #ffe6e6;
+            border: 1px solid red;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
     <h1 class="post-title">Create New Post</h1>
+
+    <!-- 에러 메시지 출력 영역 -->
+    <div th:if="${errorMessage}" class="error-message">
+        <p th:text="${errorMessage}"></p>
+    </div>
 
     <form th:action="@{/articles}" th:object="${article}" method="post" class="form-box">
         <label>Title:<br>
