@@ -18,6 +18,7 @@
 - 10주차 : JDBC 개념 , JDBCTemplate/ORM 장단점, 예외처리
 - 11주차 : 커스텀 예외 적용, ORM 작동 과정(ex.영속성context), 페이징 기능
 - 12주차 : N+1문제, 페치조인, 다중성
+- 13주차 ; 쿼리DSL 개념( + fetch join, 서브쿼리 등 기능), 복잡한 쿼리 게시판에 적용해보기
 
 ## 📌 STUDY RULE
 
