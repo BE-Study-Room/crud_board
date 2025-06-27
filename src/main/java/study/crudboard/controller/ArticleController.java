@@ -3,6 +3,9 @@ package study.crudboard.controller;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,29 +23,48 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    // 글 목록 보기
     @GetMapping
-    public String list(@RequestParam(value = "page", defaultValue = "1") int page,
-                       @RequestParam(value = "size", defaultValue = "10") int size,
-                       Model model) {
+    public String list(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "authorName", required = false) String authorName,
+            @RequestParam(value = "sort", required = false) String sort,
+            Model model) {
 
-        Page<Article> articlePage = articleService.getPagedArticles(page, size);
+        Sort sortObj;
+
+        if (sort != null && !sort.isBlank() && sort.contains(",")) {
+            String[] parts = sort.split(",");
+            sortObj = Sort.by(Sort.Direction.fromString(parts[1]), parts[0]);
+        } else {
+            sortObj = Sort.by("id").descending();
+            sort = "id,desc";
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, size, sortObj);
+
+        Page<Article> articlePage =
+                articleService.findByTitleAndAuthor(title, authorName, pageable);
 
         model.addAttribute("articles", articlePage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", articlePage.getTotalPages());
+        model.addAttribute("searchedTitle", title);
+        model.addAttribute("searchedAuthorName", authorName);
+        model.addAttribute("sort", sort);
+
+        model.addAttribute("sort", sort);
+
         return "articles/list";
     }
 
-
-    // 글 작성 폼
     @GetMapping("/form")
     public String form(Model model) {
         model.addAttribute("article", new ArticleForm());
         return "articles/form";
     }
 
-    // 글 저장
     @PostMapping
     public String create(@ModelAttribute ArticleForm form, HttpSession session) {
         Member loginMember = (Member) session.getAttribute("loginMember");
@@ -58,8 +80,6 @@ public class ArticleController {
         return "redirect:/articles";
     }
 
-
-    // 글 상세 보기
     @GetMapping("/{id}")
     public String detail(@PathVariable int id, Model model,
                          @RequestParam(value = "unauthorized", required = false) String unauthorized)
@@ -74,7 +94,6 @@ public class ArticleController {
         return "articles/detail";
     }
 
-    // 글 수정 폼
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable int id, Model model) {
         Article article = articleService.findId(id);
@@ -82,7 +101,6 @@ public class ArticleController {
         return "articles/edit";
     }
 
-    // 글 수정 반영
     @PostMapping("/{id}/edit")
     public String update(@PathVariable int id, @ModelAttribute ArticleForm form){
         Article article = articleService.findId(id);
@@ -92,7 +110,6 @@ public class ArticleController {
         return "redirect:/articles/" + article.getId();
     }
 
-    // 글 삭제
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable int id) {
         articleService.delete(id);

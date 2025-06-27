@@ -47,6 +47,18 @@ public class ArticleService {
         return articleRepository.findAll(pageable);
     }
 
+    public Page<Article> findByTitle(String title, Pageable pageable) {
+        return articleRepository.findByTitle(title, pageable);
+    }
+
+    public Page<Article> findByAuthorName(String authorName, Pageable pageable) {
+        return articleRepository.findByAuthorName(authorName, pageable);
+    }
+
+    public Page<Article> findByTitleAndAuthor(String title, String authorName, Pageable pageable) {
+        return articleRepository.findByTitleAndAuthorName(title, authorName, pageable);
+    }
+
     private void validateArticle(Article article) {
         if (article.getTitle() == null || article.getTitle().isBlank()) {
             throw new BusinessException(ErrorCode.ARTICLE_TITLE_REQUIRED, "/articles/form");

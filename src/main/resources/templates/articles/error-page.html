@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Server Error</title>
+</head>
+<body>
+<h1>서버 오류가 발생했습니다</h1>
+<p th:text="${errorMessage}">에러 메시지가 없습니다.</p>
+<a th:href="@{/}">홈으로 돌아가기</a>
+</body>
+</html>

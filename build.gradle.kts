@@ -23,6 +23,8 @@ repositories {
 	mavenCentral()
 }
 
+val querydslVersion = "5.0.0"
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.postgresql:postgresql")
@@ -34,6 +36,12 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("com.h2database:h2")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+
+	// QueryDSL
+	implementation("com.querydsl:querydsl-jpa:${querydslVersion}:jakarta")
+	annotationProcessor("com.querydsl:querydsl-apt:${querydslVersion}:jakarta")
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 }
 
 tasks.withType<Test> {
@@ -41,7 +49,20 @@ tasks.withType<Test> {
 }
 tasks.withType<JavaCompile> {
 	options.encoding = "UTF-8"
+	options.compilerArgs.add("-parameters")
 }
 tasks.withType<JavaExec> {
 	systemProperty("file.encoding", "UTF-8")
 }
+
+
+val generatedDir = layout.buildDirectory.dir("generated/sources/annotationProcessor/java/main")
+
+sourceSets["main"].java {
+	srcDir(generatedDir)
+}
+
+tasks.named<Delete>("clean") {
+	delete(generatedDir)
+}
+

@@ -12,4 +12,6 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("errorMessage", e.getErrorCode().getMessage());
         return "redirect:" + e.getRedirectUrl();
     }
+
+
 }

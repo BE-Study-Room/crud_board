@@ -20,7 +20,7 @@ public class Article {
     private int hit = 0;
     private String nowDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Member author;
 

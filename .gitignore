@@ -45,3 +45,6 @@ out
 gen
 .gradle
 build
+
+# QueryDSL generated Q-classes
+/build/generated/

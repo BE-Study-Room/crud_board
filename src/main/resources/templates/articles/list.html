@@ -34,11 +34,78 @@
         .pagination a:hover {
             background-color: #f0f0f0;
         }
+         .sort-buttons {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .sort-button {
+        display: inline-block;
+        padding: 8px 16px;
+        border: 1px solid #333;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        color: #333;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+
+    .sort-button:hover {
+        background-color: #333;
+        color: #fff;
+    }
+
+    .sort-button.active {
+        background-color: #333;
+        color: #fff;
+        border-color: #333;
+    }
     </style>
 </head>
 <body>
 
 <h1>All Posts</h1>
+
+<!-- 🔥 검색 폼 -->
+<form th:action="@{/articles}" method="get">
+    <input type="text" name="title" placeholder="Search by title"
+           th:value="${param.title}">
+    <input type="text" name="authorName" placeholder="Search by author"
+           th:value="${param.authorName}">
+    <button type="submit">Search</button>
+</form>
+
+<div class="sort-buttons">
+    <a th:href="@{/articles(sort='id,desc', page=${currentPage}, size=10, title=${param.title}, authorName=${param.authorName})}"
+       class="sort-button"
+       th:classappend="${sort} == 'id,desc' ? ' active' : ''">
+        최신순
+    </a>
+    <a th:href="@{/articles(sort='hit,desc', page=${currentPage}, size=10, title=${param.title}, authorName=${param.authorName})}"
+       class="sort-button"
+       th:classappend="${sort} == 'hit,desc' ? ' active' : ''">
+        조회수순 ↓
+    </a>
+    <a th:href="@{/articles(sort='hit,asc', page=${currentPage}, size=10, title=${param.title}, authorName=${param.authorName})}"
+       class="sort-button"
+       th:classappend="${sort} == 'hit,asc' ? ' active' : ''">
+        조회수순 ↑
+    </a>
+    <a th:href="@{/articles(sort='title,asc', page=${currentPage}, size=10, title=${param.title}, authorName=${param.authorName})}"
+       class="sort-button"
+       th:classappend="${sort} == 'title,asc' ? ' active' : ''">
+        제목순 ↑
+    </a>
+    <a th:href="@{/articles(sort='title,desc', page=${currentPage}, size=10, title=${param.title}, authorName=${param.authorName})}"
+       class="sort-button"
+       th:classappend="${sort} == 'title,desc' ? ' active' : ''">
+        제목순 ↓
+    </a>
+</div>
+
 
 <table>
     <thead>
@@ -68,26 +135,23 @@
     <span th:text="'Page ' + ${currentPage} + ' of ' + ${totalPages}"></span>
 </div>
 
-<!-- 페이징 버튼 -->
 <ul class="pagination">
-    <!-- 이전 버튼 -->
+    <!-- Prev -->
     <li th:if="${currentPage > 1}">
-        <a th:href="@{/articles(page=${currentPage - 1}, size=10)}">Prev</a>
+        <a th:href="@{/articles(page=${currentPage - 1}, size=10, title=${param.title}, authorName=${param.authorName}, sort=${sort})}">Prev</a>
     </li>
 
-    <!-- 페이지 숫자 버튼 -->
     <li th:each="i : ${#numbers.sequence(1, totalPages)}">
-        <a th:href="@{/articles(page=${i}, size=10)}"
+        <a th:href="@{/articles(page=${i}, size=10, title=${param.title}, authorName=${param.authorName}, sort=${sort})}"
            th:text="${i}"
            th:classappend="${i} == ${currentPage} ? 'active' : ''"></a>
     </li>
 
-    <!-- 다음 버튼 -->
+    <!-- Next -->
     <li th:if="${currentPage < totalPages}">
-        <a th:href="@{/articles(page=${currentPage + 1}, size=10)}">Next</a>
+        <a th:href="@{/articles(page=${currentPage + 1}, size=10, title=${param.title}, authorName=${param.authorName}, sort=${sort})}">Next</a>
     </li>
 </ul>
-
 
 <!-- 기존 버튼들 유지 -->
 <a th:href="@{/articles/form}" class="button-link">Create New Article</a>
